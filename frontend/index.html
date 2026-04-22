@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexaJobs – Find Your Dream Career</title>
+  <meta name="description" content="NexaJobs is the #1 job portal connecting top talent with world-class companies. Search thousands of jobs, upload your resume, and land your dream career today." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-canvas">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <div class="bg-orb orb-4"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">Nexa<span class="logo-accent">Jobs</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#jobs" class="nav-link">Find Jobs</a></li>
+        <li><a href="#categories" class="nav-link">Categories</a></li>
+        <li><a href="#companies" class="nav-link">Companies</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li id="adminNavItem" style="display:none"><a href="admin.html" class="nav-link admin-link">Admin Panel</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="#" class="btn btn-ghost" id="loginBtn">Sign In</a>
+        <a href="#" class="btn btn-primary" id="registerBtn">Post a Job</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-badge">🚀 <span>500+ New Jobs This Week</span></div>
+      <h1 class="hero-title">
+        Discover Your <br />
+        <span class="gradient-text">Perfect Career</span><br />
+        Opportunity
+      </h1>
+      <p class="hero-subtitle">Connect with top employers, explore thousands of roles, and land the job that transforms your life. Your next chapter starts here.</p>
+
+      <!-- Search Box -->
+      <div class="search-container glass-card">
+        <div class="search-field">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Job title, skills, or keywords..." class="search-input" />
+        </div>
+        <div class="search-divider"></div>
+        <div class="search-field">
+          <span class="search-icon">📍</span>
+          <select class="search-select" id="locationSelect">
+            <option value="">All Locations</option>
+            <option>New York, NY</option>
+            <option>San Francisco, CA</option>
+            <option>Austin, TX</option>
+            <option>Remote</option>
+            <option>London, UK</option>
+            <option>Bangalore, India</option>
+          </select>
+        </div>
+        <div class="search-divider"></div>
+        <div class="search-field">
+          <span class="search-icon">💼</span>
+          <select class="search-select" id="typeSelect">
+            <option value="">All Types</option>
+            <option>Full-Time</option>
+            <option>Part-Time</option>
+            <option>Contract</option>
+            <option>Internship</option>
+            <option>Remote</option>
+          </select>
+        </div>
+        <button class="btn btn-primary search-btn" onclick="filterJobs()">Search Jobs</button>
+      </div>
+
+      <!-- Popular Tags -->
+      <div class="popular-tags">
+        <span class="tag-label">Trending:</span>
+        <button class="tag-chip" onclick="quickSearch('UI/UX Designer')">UI/UX Designer</button>
+        <button class="tag-chip" onclick="quickSearch('Full Stack')">Full Stack</button>
+        <button class="tag-chip" onclick="quickSearch('Data Scientist')">Data Scientist</button>
+        <button class="tag-chip" onclick="quickSearch('DevOps')">DevOps</button>
+        <button class="tag-chip" onclick="quickSearch('Product Manager')">Product Manager</button>
+      </div>
+    </div>
+
+    <!-- Hero Stats -->
+    <div class="hero-stats">
+      <div class="stat-card glass-card">
+        <div class="stat-number" data-target="48000">0</div>
+        <div class="stat-label">Active Jobs</div>
+      </div>
+      <div class="stat-card glass-card">
+        <div class="stat-number" data-target="12000">0</div>
+        <div class="stat-label">Companies</div>
+      </div>
+      <div class="stat-card glass-card">
+        <div class="stat-number" data-target="2400000">0</div>
+        <div class="stat-label">Job Seekers</div>
+      </div>
+      <div class="stat-card glass-card">
+        <div class="stat-number" data-target="95">0</div>
+        <div class="stat-label">Success Rate %</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CATEGORIES SECTION ===== -->
+  <section class="section" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Explore</span>
+        <h2 class="section-title">Browse <span class="gradient-text">Job Categories</span></h2>
+        <p class="section-subtitle">Explore opportunities across every industry. From tech to creative, we have thousands of roles waiting for you.</p>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card glass-card" data-category="Technology">
+          <div class="category-icon">💻</div>
+          <h3>Technology</h3>
+          <p>8,240 Jobs</p>
+          <div class="category-arrow">→</div>
+        </div>
+        <div class="category-card glass-card" data-category="Design">
+          <div class="category-icon">🎨</div>
+          <h3>Design & Creative</h3>
+          <p>3,120 Jobs</p>
+          <div class="category-arrow">→</div>
+        </div>
+        <div class="category-card glass-card" data-category="Finance">
+          <div class="category-icon">📈</div>
+          <h3>Finance & Banking</h3>
+          <p>2,890 Jobs</p>
+          <div class="category-arrow">→</div>
+        </div>
+        <div class="category-card glass-card" data-category="Marketing">
+          <div class="category-icon">📣</div>
+          <h3>Marketing</h3>
+          <p>4,560 Jobs</p>
+          <div class="category-arrow">→</div>
+        </div>
+        <div class="category-card glass-card" data-category="Healthcare">
+          <div class="category-icon">🏥</div>
+          <h3>Healthcare</h3>
+          <p>6,780 Jobs</p>
+          <div class="category-arrow">→</div>
+        </div>
+        <div class="category-card glass-card" data-category="Education">
+          <div class="category-icon">📚</div>
+          <h3>Education</h3>
+          <p>1,950 Jobs</p>
+          <div class="category-arrow">→</div>
+        </div>
+        <div class="category-card glass-card" data-category="Engineering">
+          <div class="category-icon">⚙️</div>
+          <h3>Engineering</h3>
+          <p>5,340 Jobs</p>
+          <div class="category-arrow">→</div>
+        </div>
+        <div class="category-card glass-card" data-category="Sales">
+          <div class="category-icon">🤝</div>
+          <h3>Sales & Business</h3>
+          <p>3,670 Jobs</p>
+          <div class="category-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURED JOBS SECTION ===== -->
+  <section class="section" id="jobs">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Hot Listings</span>
+        <h2 class="section-title">Featured <span class="gradient-text">Job Openings</span></h2>
+        <p class="section-subtitle">Hand-picked opportunities from top employers, updated daily just for you.</p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar glass-card">
+        <button class="filter-btn active" data-filter="all">All Jobs</button>
+        <button class="filter-btn" data-filter="Full-Time">Full-Time</button>
+        <button class="filter-btn" data-filter="Part-Time">Part-Time</button>
+        <button class="filter-btn" data-filter="Remote">Remote</button>
+        <button class="filter-btn" data-filter="Contract">Contract</button>
+        <button class="filter-btn" data-filter="Internship">Internship</button>
+      </div>
+
+      <!-- Jobs Grid -->
+      <div class="jobs-grid" id="jobsGrid">
+        <!-- Jobs are dynamically rendered by JS -->
+      </div>
+
+      <div class="text-center mt-3">
+        <a href="#" class="btn btn-outline">View All 48,000+ Jobs →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section section-dark" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Process</span>
+        <h2 class="section-title">How <span class="gradient-text">NexaJobs</span> Works</h2>
+        <p class="section-subtitle">Three simple steps to land your dream job. Start your journey in minutes.</p>
+      </div>
+      <div class="steps-container">
+        <div class="step-card glass-card">
+          <div class="step-number">01</div>
+          <div class="step-icon">👤</div>
+          <h3>Create Your Profile</h3>
+          <p>Sign up and build a stunning profile that showcases your skills, experience, and career goals to top employers worldwide.</p>
+        </div>
+        <div class="step-connector">
+          <div class="connector-line"></div>
+          <div class="connector-dot"></div>
+        </div>
+        <div class="step-card glass-card">
+          <div class="step-number">02</div>
+          <div class="step-icon">🔍</div>
+          <h3>Find Perfect Jobs</h3>
+          <p>Use our AI-powered search to discover roles tailored to your skills. Filter by location, salary, type, and more.</p>
+        </div>
+        <div class="step-connector">
+          <div class="connector-line"></div>
+          <div class="connector-dot"></div>
+        </div>
+        <div class="step-card glass-card">
+          <div class="step-number">03</div>
+          <div class="step-icon">🚀</div>
+          <h3>Apply & Get Hired</h3>
+          <p>Apply with one click using your NexaJobs profile. Track applications, chat with recruiters, and land your dream job.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TOP COMPANIES ===== -->
+  <section class="section" id="companies">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Partners</span>
+        <h2 class="section-title">Trusted by <span class="gradient-text">World-Class</span> Companies</h2>
+        <p class="section-subtitle">Join thousands of professionals hired by leading global organizations.</p>
+      </div>
+      <div class="companies-marquee-wrapper">
+        <div class="companies-marquee" id="marquee1">
+          <div class="company-logo-item glass-mini">🟦 Microsoft</div>
+          <div class="company-logo-item glass-mini">🟠 Amazon</div>
+          <div class="company-logo-item glass-mini">🔵 Meta</div>
+          <div class="company-logo-item glass-mini">🟡 Google</div>
+          <div class="company-logo-item glass-mini">🔴 Netflix</div>
+          <div class="company-logo-item glass-mini">🟣 Spotify</div>
+          <div class="company-logo-item glass-mini">⚪ Apple</div>
+          <div class="company-logo-item glass-mini">🟦 Twitter</div>
+          <div class="company-logo-item glass-mini">🔷 Salesforce</div>
+          <div class="company-logo-item glass-mini">🟢 Shopify</div>
+          <div class="company-logo-item glass-mini">🔵 LinkedIn</div>
+          <div class="company-logo-item glass-mini">🟠 Stripe</div>
+          <!-- Duplicate for seamless loop -->
+          <div class="company-logo-item glass-mini">🟦 Microsoft</div>
+          <div class="company-logo-item glass-mini">🟠 Amazon</div>
+          <div class="company-logo-item glass-mini">🔵 Meta</div>
+          <div class="company-logo-item glass-mini">🟡 Google</div>
+          <div class="company-logo-item glass-mini">🔴 Netflix</div>
+          <div class="company-logo-item glass-mini">🟣 Spotify</div>
+          <div class="company-logo-item glass-mini">⚪ Apple</div>
+          <div class="company-logo-item glass-mini">🟦 Twitter</div>
+        </div>
+      </div>
+
+      <!-- Company Cards -->
+      <div class="company-cards-grid">
+        <div class="company-card glass-card">
+          <div class="company-avatar" style="background: linear-gradient(135deg, #4285F4, #34A853);">G</div>
+          <div class="company-info">
+            <h4>Google</h4>
+            <p>Technology • Mountain View, CA</p>
+          </div>
+          <div class="company-jobs-count">142 Jobs</div>
+        </div>
+        <div class="company-card glass-card">
+          <div class="company-avatar" style="background: linear-gradient(135deg, #FF9900, #146EB4);">A</div>
+          <div class="company-info">
+            <h4>Amazon</h4>
+            <p>E-Commerce • Seattle, WA</p>
+          </div>
+          <div class="company-jobs-count">89 Jobs</div>
+        </div>
+        <div class="company-card glass-card">
+          <div class="company-avatar" style="background: linear-gradient(135deg, #1877F2, #42B72A);">M</div>
+          <div class="company-info">
+            <h4>Meta</h4>
+            <p>Social Media • Menlo Park, CA</p>
+          </div>
+          <div class="company-jobs-count">67 Jobs</div>
+        </div>
+        <div class="company-card glass-card">
+          <div class="company-avatar" style="background: linear-gradient(135deg, #E31837, #000);">N</div>
+          <div class="company-info">
+            <h4>Netflix</h4>
+            <p>Streaming • Los Gatos, CA</p>
+          </div>
+          <div class="company-jobs-count">34 Jobs</div>
+        </div>
+        <div class="company-card glass-card">
+          <div class="company-avatar" style="background: linear-gradient(135deg, #1DB954, #191414);">S</div>
+          <div class="company-info">
+            <h4>Spotify</h4>
+            <p>Music Tech • New York, NY</p>
+          </div>
+          <div class="company-jobs-count">28 Jobs</div>
+        </div>
+        <div class="company-card glass-card">
+          <div class="company-avatar" style="background: linear-gradient(135deg, #635BFF, #80E9FF);">P</div>
+          <div class="company-info">
+            <h4>Stripe</h4>
+            <p>Fintech • San Francisco, CA</p>
+          </div>
+          <div class="company-jobs-count">52 Jobs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="section section-dark" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Success Stories</span>
+        <h2 class="section-title">What Our <span class="gradient-text">Users Say</span></h2>
+        <p class="section-subtitle">Real people, real results. Here's how NexaJobs changed their careers.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card glass-card featured-testimonial">
+          <div class="quote-mark">"</div>
+          <p class="testimonial-text">NexaJobs completely transformed my job search. Within 3 weeks, I went from unemployed to landing a Senior Engineer role at a top 5 tech company with a 40% salary increase!</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">JS</div>
+            <div class="author-info">
+              <strong>James Sullivan</strong>
+              <span>Senior Software Engineer @ Google</span>
+            </div>
+            <div class="rating">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+        <div class="testimonial-card glass-card">
+          <div class="quote-mark">"</div>
+          <p class="testimonial-text">The AI job matching is incredible. It recommended roles I hadn't even considered, and I landed my dream UX position in just 2 weeks!</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c);">AM</div>
+            <div class="author-info">
+              <strong>Aisha Morgan</strong>
+              <span>UX Lead @ Meta</span>
+            </div>
+            <div class="rating">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+        <div class="testimonial-card glass-card">
+          <div class="quote-mark">"</div>
+          <p class="testimonial-text">As a recruiter, NexaJobs saved us hundreds of hours. The quality of candidates is unmatched, and the admin panel makes everything so easy.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">RK</div>
+            <div class="author-info">
+              <strong>Raj Kumar</strong>
+              <span>HR Director @ Amazon</span>
+            </div>
+            <div class="rating">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-card glass-card">
+        <div class="cta-content">
+          <h2>Ready to <span class="gradient-text">Launch Your Career?</span></h2>
+          <p>Join over 2.4 million professionals who found their dream jobs on NexaJobs. It's free to get started.</p>
+          <div class="cta-buttons">
+            <a href="#" class="btn btn-primary btn-lg">Get Started Free</a>
+            <a href="#" class="btn btn-ghost btn-lg">Post a Job →</a>
+          </div>
+        </div>
+        <div class="cta-visual">
+          <div class="floating-badge badge-1 glass-mini">✅ 48K+ Jobs</div>
+          <div class="floating-badge badge-2 glass-mini">🏆 Top Companies</div>
+          <div class="floating-badge badge-3 glass-mini">⚡ Instant Apply</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="logo">
+            <span class="logo-icon">⬡</span>
+            <span class="logo-text">Nexa<span class="logo-accent">Jobs</span></span>
+          </a>
+          <p>The world's most advanced job portal. Connecting talent with opportunity since 2024.</p>
+          <div class="social-links">
+            <a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+            <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+            <a href="#" class="social-btn" aria-label="GitHub">⌥</a>
+            <a href="#" class="social-btn" aria-label="Instagram">◎</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>For Job Seekers</h4>
+          <ul>
+            <li><a href="#">Browse Jobs</a></li>
+            <li><a href="#">Career Advice</a></li>
+            <li><a href="#">Resume Builder</a></li>
+            <li><a href="#">Salary Guide</a></li>
+            <li><a href="#">Job Alerts</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>For Employers</h4>
+          <ul>
+            <li><a href="admin.html">Post a Job</a></li>
+            <li><a href="admin.html">Talent Search</a></li>
+            <li><a href="admin.html">Admin Panel</a></li>
+            <li><a href="#">Pricing Plans</a></li>
+            <li><a href="#">HR Solutions</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 NexaJobs. All rights reserved. Made with ❤️ for job seekers worldwide.</p>
+        <div class="footer-badges">
+          <span class="glass-mini badge-pill">🔒 SSL Secured</span>
+          <span class="glass-mini badge-pill">GDPR Compliant</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Job Apply Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal glass-card" id="jobModal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

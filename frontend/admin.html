@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexaJobs – Admin Dashboard</title>
+  <meta name="description" content="NexaJobs Admin Panel – Manage jobs, applications and users." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-canvas">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Login Gate -->
+  <div id="loginGate" class="login-gate">
+    <div class="login-card glass-card">
+      <div class="login-logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">Nexa<span class="logo-accent">Jobs</span></span>
+      </div>
+      <h2>Admin Dashboard</h2>
+      <p class="login-subtitle">Sign in to manage jobs, applications and users</p>
+      <form id="adminLoginForm" onsubmit="adminLogin(event)">
+        <div class="form-group">
+          <label for="adminEmail">Email</label>
+          <input type="email" id="adminEmail" placeholder="admin@nexajobs.com" required />
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="adminLoginBtn">Sign In to Admin</button>
+      </form>
+      <a href="index.html" class="back-link">← Back to Job Portal</a>
+    </div>
+  </div>
+
+  <!-- Admin App -->
+  <div id="adminApp" class="admin-app hidden">
+
+    <!-- Sidebar -->
+    <aside class="sidebar glass-card" id="sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">Nexa<span class="logo-accent">Jobs</span></span>
+        </a>
+        <div class="admin-badge">Admin</div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+          <span class="nav-icon">📊</span> Dashboard
+        </button>
+        <button class="nav-item" data-tab="jobs" onclick="switchTab('jobs')">
+          <span class="nav-icon">💼</span> Manage Jobs
+        </button>
+        <button class="nav-item" data-tab="post-job" onclick="switchTab('post-job')">
+          <span class="nav-icon">➕</span> Post New Job
+        </button>
+        <button class="nav-item" data-tab="applications" onclick="switchTab('applications')">
+          <span class="nav-icon">📋</span> Applications
+          <span class="nav-badge" id="pendingBadge">0</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-user-info" id="adminUserInfo"></div>
+        <button class="btn btn-ghost btn-sm" onclick="adminLogout()">Sign Out</button>
+        <a href="index.html" class="btn btn-ghost btn-sm" style="margin-top:8px;display:block;text-align:center;text-decoration:none;">← View Site</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+      <!-- ── DASHBOARD TAB ─────────────────────────── -->
+      <section id="tab-dashboard" class="admin-tab active">
+        <div class="page-header">
+          <div>
+            <h1>Dashboard <span class="gradient-text">Overview</span></h1>
+            <p class="page-subtitle">Welcome back! Here's what's happening on NexaJobs.</p>
+          </div>
+          <button class="btn btn-primary" onclick="switchTab('post-job')">➕ Post New Job</button>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-tile glass-card">
+            <div class="stat-icon">💼</div>
+            <div class="stat-info">
+              <div class="stat-val" id="statActiveJobs">—</div>
+              <div class="stat-lbl">Active Jobs</div>
+            </div>
+          </div>
+          <div class="stat-tile glass-card">
+            <div class="stat-icon">📋</div>
+            <div class="stat-info">
+              <div class="stat-val" id="statTotalApps">—</div>
+              <div class="stat-lbl">Total Applications</div>
+            </div>
+          </div>
+          <div class="stat-tile glass-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-info">
+              <div class="stat-val" id="statPending">—</div>
+              <div class="stat-lbl">Pending Review</div>
+            </div>
+          </div>
+          <div class="stat-tile glass-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-info">
+              <div class="stat-val" id="statFeatured">—</div>
+              <div class="stat-lbl">Featured Jobs</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dash-panel glass-card">
+            <h3>📊 Jobs by Category</h3>
+            <div id="categoryChart" class="category-bars"></div>
+          </div>
+          <div class="dash-panel glass-card">
+            <h3>📋 Recent Applications</h3>
+            <div id="recentApps" class="recent-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── MANAGE JOBS TAB ───────────────────────── -->
+      <section id="tab-jobs" class="admin-tab">
+        <div class="page-header">
+          <div>
+            <h1>Manage <span class="gradient-text">Jobs</span></h1>
+            <p class="page-subtitle">View, edit, or delete all job listings.</p>
+          </div>
+          <button class="btn btn-primary" onclick="switchTab('post-job')">➕ Post New Job</button>
+        </div>
+
+        <div class="table-controls glass-card">
+          <input type="text" id="jobSearchInput" placeholder="🔍 Search jobs..." 
+            oninput="filterAdminJobs()" class="table-search" />
+          <select id="jobTypeFilter" onchange="filterAdminJobs()" class="table-filter-select">
+            <option value="">All Types</option>
+            <option>Full-Time</option><option>Part-Time</option>
+            <option>Remote</option><option>Contract</option><option>Internship</option>
+          </select>
+          <select id="jobCatFilter" onchange="filterAdminJobs()" class="table-filter-select">
+            <option value="">All Categories</option>
+            <option>Technology</option><option>Design</option><option>Finance</option>
+            <option>Marketing</option><option>Healthcare</option><option>Engineering</option><option>Sales</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="loadAdminJobs()">🔄 Refresh</button>
+        </div>
+
+        <div class="data-table-wrap glass-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Job Title</th><th>Company</th><th>Type</th>
+                <th>Category</th><th>Applicants</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="jobsTableBody">
+              <tr><td colspan="7" class="loading-row"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="jobsPaginator" class="table-paginator"></div>
+      </section>
+
+      <!-- ── POST JOB TAB ──────────────────────────── -->
+      <section id="tab-post-job" class="admin-tab">
+        <div class="page-header">
+          <div>
+            <h1 id="postJobTitle">Post a <span class="gradient-text">New Job</span></h1>
+            <p class="page-subtitle" id="postJobSubtitle">Fill in the details to list a job on NexaJobs.</p>
+          </div>
+        </div>
+
+        <form id="jobForm" class="job-form glass-card" onsubmit="submitJob(event)">
+          <input type="hidden" id="editJobId" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="jTitle">Job Title *</label>
+              <input type="text" id="jTitle" placeholder="e.g. Senior Frontend Engineer" required />
+            </div>
+            <div class="form-group">
+              <label for="jCompany">Company Name *</label>
+              <input type="text" id="jCompany" placeholder="e.g. Google" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="jLocation">Location *</label>
+              <input type="text" id="jLocation" placeholder="e.g. San Francisco, CA or Remote" required />
+            </div>
+            <div class="form-group">
+              <label for="jType">Job Type *</label>
+              <select id="jType" required>
+                <option value="">Select type</option>
+                <option>Full-Time</option><option>Part-Time</option>
+                <option>Remote</option><option>Contract</option><option>Internship</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="jCategory">Category *</label>
+              <select id="jCategory" required>
+                <option value="">Select category</option>
+                <option>Technology</option><option>Design</option><option>Finance</option>
+                <option>Marketing</option><option>Healthcare</option><option>Education</option>
+                <option>Engineering</option><option>Sales</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="jSalary">Salary</label>
+              <input type="text" id="jSalary" placeholder="e.g. $100K – $140K / yr" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="jExperience">Experience Required</label>
+              <input type="text" id="jExperience" placeholder="e.g. 3+ years" />
+            </div>
+            <div class="form-group">
+              <label for="jDeadline">Application Deadline</label>
+              <input type="date" id="jDeadline" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="jDescription">Job Description *</label>
+            <textarea id="jDescription" rows="5" placeholder="Describe the role, company, and opportunity..." required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="jRequirements">Requirements (one per line)</label>
+              <textarea id="jRequirements" rows="4" placeholder="5+ years experience&#10;Strong TypeScript skills&#10;BS/MS in Computer Science"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="jResponsibilities">Responsibilities (one per line)</label>
+              <textarea id="jResponsibilities" rows="4" placeholder="Lead frontend architecture&#10;Mentor junior engineers&#10;Ship features end-to-end"></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="jSkills">Skills (comma separated)</label>
+              <input type="text" id="jSkills" placeholder="React, TypeScript, GraphQL, Testing" />
+            </div>
+            <div class="form-group">
+              <label for="jCompanyColor">Company Brand Color</label>
+              <input type="text" id="jCompanyColor" placeholder="linear-gradient(135deg, #7c3aed, #06b6d4)" />
+            </div>
+          </div>
+
+          <div class="form-row form-checkboxes">
+            <label class="checkbox-label">
+              <input type="checkbox" id="jFeatured" /> ⭐ Featured Listing
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="jUrgent" /> 🔥 Urgent Hire
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="jRemote" /> 🌍 Remote Friendly
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="jActive" checked /> ✅ Active (Visible)
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg" id="jobSubmitBtn">🚀 Post Job</button>
+            <button type="button" class="btn btn-ghost" onclick="resetJobForm()">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ── APPLICATIONS TAB ──────────────────────── -->
+      <section id="tab-applications" class="admin-tab">
+        <div class="page-header">
+          <div>
+            <h1>Job <span class="gradient-text">Applications</span></h1>
+            <p class="page-subtitle">Review and manage all candidate applications.</p>
+          </div>
+          <div class="status-filter-btns">
+            <button class="filter-pill active" onclick="filterApplications('all', this)">All</button>
+            <button class="filter-pill" onclick="filterApplications('pending', this)">⏳ Pending</button>
+            <button class="filter-pill" onclick="filterApplications('reviewed', this)">👀 Reviewed</button>
+            <button class="filter-pill" onclick="filterApplications('shortlisted', this)">✅ Shortlisted</button>
+            <button class="filter-pill" onclick="filterApplications('rejected', this)">❌ Rejected</button>
+            <button class="filter-pill" onclick="filterApplications('hired', this)">🏆 Hired</button>
+          </div>
+        </div>
+
+        <div class="data-table-wrap glass-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Applicant</th><th>Email</th><th>Job</th>
+                <th>Applied</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="appsTableBody">
+              <tr><td colspan="6" class="loading-row"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="appsPaginator" class="table-paginator"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Application Detail Modal -->
+  <div class="modal-overlay" id="appModalOverlay">
+    <div class="modal glass-card" id="appModal">
+      <button class="modal-close" onclick="closeAppModal()">✕</button>
+      <div id="appModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div class="modal-overlay" id="confirmOverlay">
+    <div class="modal glass-card confirm-modal">
+      <button class="modal-close" onclick="closeConfirm()">✕</button>
+      <div class="confirm-icon">⚠️</div>
+      <h3>Confirm Delete</h3>
+      <p id="confirmMsg">Are you sure you want to delete this job? This cannot be undone.</p>
+      <div class="form-actions">
+        <button class="btn btn-danger" id="confirmYesBtn" onclick="confirmDelete()">Yes, Delete</button>
+        <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
