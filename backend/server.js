@@ -32,9 +32,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: '🚀 NexaJobs API is running', timestamp: new Date() });
 });
 
-// Simple root route
-app.get('/', (req, res) => {
-  res.send('🚀 NexaJobs API is Live and Running!');
+// Serve index.html for all non-API routes (SPA fallback)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 // ─── Connect DB & Start ────────────────────────────────────────
