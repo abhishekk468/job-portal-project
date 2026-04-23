@@ -19,19 +19,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ─── Routes ───────────────────────────────────────────────────
-console.log('📦 Loading Auth routes...');
-const authData = require('./routes/auth');
-const authRouter = authData.router || authData;
-console.log('📦 Loading Jobs routes...');
+const { router: authRouter } = require('./routes/auth');
 const jobsRouter = require('./routes/jobs');
-console.log('📦 Loading Applications routes...');
 const applicationsRouter = require('./routes/applications');
 
-console.log('⚙️ Registering Auth middleware...');
 app.use('/api/auth', authRouter);
-console.log('⚙️ Registering Jobs middleware...');
 app.use('/api/jobs', jobsRouter);
-console.log('⚙️ Registering Applications middleware...');
 app.use('/api/applications', applicationsRouter);
 
 // Health check
@@ -47,9 +40,6 @@ app.get('*', (req, res) => {
 // ─── Connect DB & Start ────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/nexajobs';
-
-console.log('📡 Attempting to connect to MongoDB...');
-console.log('🔗 URI:', MONGODB_URI.split('@')[1] ? 'mongodb+srv://***@' + MONGODB_URI.split('@')[1] : 'Local DB');
 
 mongoose.connect(MONGODB_URI)
   .then(async () => {
