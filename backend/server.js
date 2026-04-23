@@ -33,13 +33,9 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve index.html for all non-API routes (SPA fallback) — Express 5 wildcard syntax
-app.get('/*', (req, res) => {
-  const indexPath = path.join(__dirname, '../frontend/index.html');
-  if (require('fs').existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.json({ message: 'API is working, but frontend files were not found on the backend server.' });
-  }
+// Serve index.html for all non-API routes (SPA fallback)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 // ─── Connect DB & Start ────────────────────────────────────────
