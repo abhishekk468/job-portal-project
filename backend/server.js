@@ -32,10 +32,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: '🚀 NexaJobs API is running', timestamp: new Date() });
 });
 
-// Serve index.html for all non-API routes (SPA fallback) — Express 5 wildcard syntax
-// Serve index.html for all non-API routes (SPA fallback)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+// Simple root route
+app.get('/', (req, res) => {
+  res.send('🚀 NexaJobs API is Live and Running!');
 });
 
 // ─── Connect DB & Start ────────────────────────────────────────
