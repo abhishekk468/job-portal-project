@@ -19,12 +19,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ─── Routes ───────────────────────────────────────────────────
-const { router: authRouter } = require('./routes/auth');
+console.log('📦 Loading Auth routes...');
+const authData = require('./routes/auth');
+const authRouter = authData.router || authData;
+console.log('📦 Loading Jobs routes...');
 const jobsRouter = require('./routes/jobs');
+console.log('📦 Loading Applications routes...');
 const applicationsRouter = require('./routes/applications');
 
+console.log('⚙️ Registering Auth middleware...');
 app.use('/api/auth', authRouter);
+console.log('⚙️ Registering Jobs middleware...');
 app.use('/api/jobs', jobsRouter);
+console.log('⚙️ Registering Applications middleware...');
 app.use('/api/applications', applicationsRouter);
 
 // Health check
