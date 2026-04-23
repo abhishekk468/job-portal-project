@@ -2,7 +2,7 @@
 //  NexaJobs – Frontend App  (connects to backend)
 // ═══════════════════════════════════════════════
 
-const API = 'http://localhost:5000/api';
+const API = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:5000/api';
 
 // ─── State ────────────────────────────────────────
 let allJobs = [];

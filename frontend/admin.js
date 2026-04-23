@@ -2,7 +2,7 @@
 //  NexaJobs – Admin Dashboard JS
 // ═══════════════════════════════════════════════
 
-const API = 'http://localhost:5000/api';
+const API = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:5000/api';
 // Support both admin-specific and main-site tokens
 let adminToken = localStorage.getItem('nexajobs_admin_token')
               || localStorage.getItem('nexajobs_token')
