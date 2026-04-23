@@ -33,17 +33,25 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve index.html for all non-API routes (SPA fallback) — Express 5 wildcard syntax
-app.get('/{*splat}', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+app.get('/*', (req, res) => {
+  const indexPath = path.join(__dirname, '../frontend/index.html');
+  if (require('fs').existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.json({ message: 'API is working, but frontend files were not found on the backend server.' });
+  }
 });
 
 // ─── Connect DB & Start ────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/nexajobs';
 
+console.log('📡 Attempting to connect to MongoDB...');
+console.log('🔗 URI:', MONGODB_URI.split('@')[1] ? 'mongodb+srv://***@' + MONGODB_URI.split('@')[1] : 'Local DB');
+
 mongoose.connect(MONGODB_URI)
   .then(async () => {
-    console.log('✅ Connected to MongoDB');
+    console.log('✅ Connected to MongoDB successfully');
 
     // Auto-seed if empty
     const Job = require('./models/Job');
