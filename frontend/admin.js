@@ -78,6 +78,9 @@ function forceAdminLogin() {
 async function adminLogin(e) {
   e.preventDefault();
   const btn = document.getElementById('adminLoginBtn');
+  const errorBox = document.getElementById('adminLoginError');
+  
+  if (errorBox) errorBox.classList.add('hidden');
   btn.textContent = 'Signing in...'; btn.disabled = true;
 
   try {
@@ -99,7 +102,12 @@ async function adminLogin(e) {
     localStorage.setItem('nexajobs_admin_token', adminToken);
     showAdminApp();
   } catch (err) {
-    showToast(`❌ ${err.message}`, 'error');
+    if (errorBox) {
+      errorBox.textContent = `❌ ${err.message}`;
+      errorBox.classList.remove('hidden');
+    } else {
+      showToast(`❌ ${err.message}`, 'error');
+    }
   } finally {
     btn.textContent = 'Sign In to Admin'; btn.disabled = false;
   }

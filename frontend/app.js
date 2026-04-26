@@ -516,6 +516,7 @@ function createAuthModal() {
         <button class="auth-tab active" id="loginTab" onclick="setAuthMode('login')">Sign In</button>
         <button class="auth-tab" id="registerTab" onclick="setAuthMode('register')">Register</button>
       </div>
+      <div id="authError" class="error-box hidden"></div>
       <div id="authContent"></div>
     </div>`;
   modal.addEventListener('click', (e) => { if (e.target.id === 'authModalOverlay') closeAuthModal(); });
@@ -575,6 +576,8 @@ function setAuthMode(mode) {
 async function handleLogin(e) {
   e.preventDefault();
   const btn = document.getElementById('loginBtn2');
+  const errorBox = document.getElementById('authError');
+  if (errorBox) errorBox.classList.add('hidden');
   btn.textContent = 'Signing in...'; btn.disabled = true;
   try {
     const res = await fetch(`${API}/auth/login`, {
@@ -595,7 +598,13 @@ async function handleLogin(e) {
     closeAuthModal();
     showToast(`👋 Welcome back, ${currentUser.name}!`, 'success');
   } catch (err) {
-    showToast(`❌ ${err.message}`, 'error');
+    const errorBox = document.getElementById('authError');
+    if (errorBox) {
+      errorBox.textContent = `❌ ${err.message}`;
+      errorBox.classList.remove('hidden');
+    } else {
+      showToast(`❌ ${err.message}`, 'error');
+    }
   } finally {
     btn.textContent = 'Sign In'; btn.disabled = false;
   }
@@ -626,7 +635,13 @@ async function handleRegister(e) {
     closeAuthModal();
     showToast(`🎉 Welcome to NexaJobs, ${currentUser.name}!`, 'success');
   } catch (err) {
-    showToast(`❌ ${err.message}`, 'error');
+    const errorBox = document.getElementById('authError');
+    if (errorBox) {
+      errorBox.textContent = `❌ ${err.message}`;
+      errorBox.classList.remove('hidden');
+    } else {
+      showToast(`❌ ${err.message}`, 'error');
+    }
   } finally {
     btn.textContent = 'Create Account'; btn.disabled = false;
   }
